@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
     const row = document.querySelector(".row")
+    //be careful with log in div - maybe retitle later?
     const logInDiv = document.getElementById("login")
-
+    const signInForm = document.getElementById("sign-in")
+    const createAccountForm = document.getElementById("create-account")
+    const greetingHeader = document.getElementById("greeting")
 
     function chooseYourMonster() {
         fetch("http://localhost:3000/monsters")
@@ -30,35 +33,109 @@ document.addEventListener("DOMContentLoaded", () => {
         row.append(newCard)
     }
 
+
+
     function renderLoginUserMonster(userObj) {
+        // get attributes off user_monster and fill here
+        let {happiness, hunger_level, power} = userObj.stats
+
         row.innerHTML = `
         <div data-id=${userObj.monster.id} class="card" style="width: 45rem;">
             <img src=${userObj.monster.image_url} class="card-img-top" alt="...">
             <div class="card-body">
              <h5 class="card-title">Name: ${userObj.stats.name}</h5>
             <p class="card-text">${userObj.stats.name} loves long walks on the beach</p>
-            <a href="#" class="btn btn-primary">Feed</a>
-            <a href="#" class="btn btn-primary">Pet/Punish</a>
-            <a href="#" class="btn btn-primary">Train</a>
+            <button type="button" class="btn btn-info">Feed</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: ${hunger_level}%" aria-valuenow="${hunger_level}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>
+
+                <button type="button" class="btn btn-warning">Pet</button><br><br>
+                <button type="button" class="btn btn-warning">Punish</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: ${happiness}%" aria-valuenow="${happiness}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>    
+
+
+                <button type="button" class="btn btn-danger">Train</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: ${power}%" aria-valuenow="${power}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>
             </div>
         </div>
         `
     }
 
     function renderCreatedUserMonster(userMonsterObj){
-        //row.innerHTML = ``
         row.innerHTML = `
         <div data-id=${userMonsterObj.monster.id} class="card" style="width: 45rem;">
             <img src=${userMonsterObj.monster.image_url} class="card-img-top" alt="...">
             <div class="card-body">
              <h5 class="card-title">Name: ${userMonsterObj.name}</h5>
             <p class="card-text">${userMonsterObj.name} loves long walks on the beach</p>
-            <a href="#" class="btn btn-primary">Feed</a>
-            <a href="#" class="btn btn-primary">Pet/Punish</a>
-            <a href="#" class="btn btn-primary">Train</a>
+            
+            <button type="button" class="btn btn-info">Feed</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: ${userMonsterObj.hunger_level}%" aria-valuenow="${userMonsterObj.hunger_level}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>
+
+                <button type="button" class="btn btn-warning">Pet</button><br><br>
+                <button type="button" class="btn btn-warning">Punish</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: ${userMonsterObj.happiness}%" aria-valuenow="${userMonsterObj.happiness}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>    
+
+
+                <button type="button" class="btn btn-danger">Train</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: ${userMonsterObj.power}%" aria-valuenow="${userMonsterObj.power}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>
+
+
             </div>
         </div>
         `
+    }
+
+    function submitHandler() {
+        document.addEventListener("submit", function(e){
+            if(e.target === signInForm){
+                console.log(e.target, "sign in")
+            } else if (e.target === createAccountForm) {
+                e.preventDefault()
+                
+
+                const options = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":"application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: createAccountForm.name.value
+                    })
+                }
+
+                fetch("http://localhost:3000/users", options)
+                    .then(response => response.json())
+                    .then(userObj => {
+                        greetingHeader.dataset.id = userObj.id
+                        greetingHeader.textContent = `Welcome ${userObj.name}!!!!!!`
+                        
+                        chooseYourMonster()
+
+                    })
+
+
+
+
+
+
+
+            }
+
+        })
+
     }
 
 
@@ -92,85 +169,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     })
                     
-            }
+            } 
            
        })
    }
-//choose your monster only gets called when "create account button" is clicked
-    //chooseYourMonster()
+
     clickHandler()
+    submitHandler()
 
 
-    renderLoginUserMonster({
-        "id": 1,
-        "name": "Michael",
-        "created_at": "2020-08-17T20:42:56.042Z",
-        "updated_at": "2020-08-17T20:42:56.042Z",
-        "monster": {
-          "id": 1,
-          "monster_theme": "Cute",
-          "image_url": "https://cdn1.iconfinder.com/data/icons/monster-8-1/512/MonsterV1-92-512.png",
-          "created_at": "2020-08-17T20:42:56.076Z",
-          "updated_at": "2020-08-17T20:42:56.076Z"
-        },
-        "stats": {
-          "id": 1,
-          "hunger_level": 100,
-          "happiness": 78,
-          "power": 59,
-          "user_id": 1,
-          "monster_id": 1,
-          "name": "Shaggy",
-          "created_at": "2020-08-17T20:42:56.093Z",
-          "updated_at": "2020-08-17T20:42:56.093Z"
-        }
-      })
+    // this is hard coded as if someone clicked a monster:
+    // renderLoginUserMonster({
+    //     "id": 1,
+    //     "name": "Michael",
+    //     "created_at": "2020-08-17T20:42:56.042Z",
+    //     "updated_at": "2020-08-17T20:42:56.042Z",
+    //     "monster": {
+    //       "id": 1,
+    //       "monster_theme": "Cute",
+    //       "image_url": "https://cdn1.iconfinder.com/data/icons/monster-8-1/512/MonsterV1-92-512.png",
+    //       "created_at": "2020-08-17T20:42:56.076Z",
+    //       "updated_at": "2020-08-17T20:42:56.076Z"
+    //     },
+    //     "stats": {
+    //       "id": 1,
+    //       "hunger_level": 10,
+    //       "happiness": 30,
+    //       "power": 20,
+    //       "user_id": 1,
+    //       "monster_id": 1,
+    //       "name": "Shaggy",
+    //       "created_at": "2020-08-17T20:42:56.093Z",
+    //       "updated_at": "2020-08-17T20:42:56.093Z"
+    //     }
+    //   })
+
+
 })
 
-
-
-// <div class="album py-5 bg-light">
-//   <div class="container">
-//     <div class="row">
-
-//       <div class="col-md-4">
-//         <div class="card mb-4 shadow-sm">
-//           <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595C"/><text x="50%" y="50%" fill="#ECEEEF" dy=".3em">Thumbnail</text></svg>
-//           <div class="card-body">
-//             <p class="card-text">Cute monster</p>
-//             <div class="d-flex justify-content-between align-items-center">
-//               <div class="btn-group">
-//                 <button type="button" class="btn btn-sm btn-outline-secondary">Choose Monster</button>
-//               </div>
-// //             </div>
-
-// //           </div>
-// //         </div>
-//       </div>
-//       <div class="col-md-4">
-//         <div class="card mb-4 shadow-sm">
-//           <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595C"/><text x="50%" y="50%" fill="#ECEEEF" dy=".3em">Thumbnail</text></svg>
-//           <div class="card-body">
-//             <p class="card-text">Scary Monster</p>
-//             <div class="d-flex justify-content-between align-items-center">
-//               <div class="btn-group">
-//                 <button type="button" class="btn btn-sm btn-outline-secondary">Choose Monster</button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//       <div class="col-md-4">
-//         <div class="card mb-4 shadow-sm">
-//           <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595C"/><text x="50%" y="50%" fill="#ECEEEF" dy=".3em">Thumbnail</text></svg>
-//           <div class="card-body">
-//             <p class="card-text">Cool Monster</p>
-//             <div class="d-flex justify-content-between align-items-center">
-//               <div class="btn-group">
-//                 <button type="button" class="btn btn-sm btn-outline-secondary">Choose Monster</button>
-//               </div>
-              
-//             </div>
-//           </div>
-//         </div>
-//       </div>
