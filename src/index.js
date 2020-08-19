@@ -52,67 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
         logInDiv.append(logOutButton)
     }
 
-    function renderLoginUserMonster(userObj) {
-        // get attributes off user_monster and fill here
-        let {happiness, hunger_level, power} = userObj.stats
+    
 
-        row.innerHTML = `
-        <div data-id=${userObj.stats.id} class="card" style="width: 45rem;">
-            <img src=${userObj.monster.image_url} class="card-img-top" alt="...">
-            <div class="card-body">
-             <h5 class="card-title">Name: ${userObj.stats.name}</h5>
-            <p class="card-text">${userObj.stats.name} loves long walks on the beach</p>
-            <button type="button" class="btn btn-info">Feed</button><br><br>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-info" data-name="hunger" role="progressbar" style="width: ${hunger_level}%" aria-valuenow="${hunger_level}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><br><br>
-
-                <button type="button" class="btn btn-warning">Pet 😸</button>
-                <button type="button" class="btn btn-warning">Punish 😿</button><br><br>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-warning" data-name="happiness" role="progressbar" style="width: ${happiness}%" aria-valuenow="${happiness}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><br><br>    
-
-
-                <button type="button" class="btn btn-danger">Train</button><br><br>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-danger" data-name="power" role="progressbar" style="width: ${power}%" aria-valuenow="${power}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><br><br>
-            </div>
-        </div>
-        `
-    }
-
-    function renderCreatedUserMonster(userMonsterObj){
-        row.innerHTML = `
-        <div data-id=${userMonsterObj.id} class="card" style="width: 45rem;">
-            <img src=${userMonsterObj.monster.image_url} class="card-img-top" alt="...">
-            <div class="card-body">
-             <h5 class="card-title">Name: ${userMonsterObj.name}</h5>
-            <p class="card-text">${userMonsterObj.name} loves long walks on the beach</p>
-            
-            <button type="button" class="btn btn-info">Feed</button><br><br>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-info" data-name="hunger" role="progressbar" style="width: ${userMonsterObj.hunger_level}%" aria-valuenow="${userMonsterObj.hunger_level}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><br><br>
-
-                <button type="button" class="btn btn-warning">Pet 😸</button>
-                <button type="button" class="btn btn-warning">Punish 😿</button><br><br>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-warning" data-name="happiness" role="progressbar" style="width: ${userMonsterObj.happiness}%" aria-valuenow="${userMonsterObj.happiness}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><br><br>    
-
-
-                <button type="button" class="btn btn-danger">Train</button><br><br>
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-danger" data-name="power" role="progressbar" style="width: ${userMonsterObj.power}%" aria-valuenow="${userMonsterObj.power}" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><br><br>
-
-
-            </div>
-        </div>
-        `
-    }
+    
 
     function submitHandler() {
         document.addEventListener("submit", function(e){
@@ -136,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 fetch("http://localhost:3000/login", options)
                     .then(response => response.json())
                     .then(userObj => {
-                    
+                        console.log(userObj)
                         if(userObj.status){
                         alert("Account doesn't exist. Please enter valid name or create an account")
                     }
@@ -145,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         greetingHeader.textContent = `Welcome ${userObj.name}!!!!!!`
                         
                         if(userObj.monster) {
-                            renderLoginUserMonster(userObj)
+                            renderChosenMonster(userObj.stats,userObj.monster)
                         } else {
                             chooseYourMonster()
                         }
@@ -177,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         createLogOut()
                     })
             } else if (e.target.id === "createmonster") {
+                e.preventDefault()
                 monsterId = parseInt(e.target.closest(".col-md-4").dataset.id)
                 userId = parseInt(document.getElementById("greeting").dataset.id)
                 let monsterName
@@ -205,10 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 fetch("http://localhost:3000/user_monsters", options)
                     .then(response => response.json())
-                    .then(userMonsterObj => {
-                        renderCreatedUserMonster(userMonsterObj)
-
-                    })
+                    .then(userMonsterObj => {renderChosenMonster(userMonsterObj,userMonsterObj.monster)})
                     
             }
 
@@ -233,8 +173,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
         fetch(`http://localhost:3000/user_monsters/${userMonsterId}`, options)
             .then(response => response.json())
-            .then(updatedUserMonster => {renderCreatedUserMonster(updatedUserMonster)})
+            .then(updatedUserMonster => {renderChosenMonster(updatedUserMonster,updatedUserMonster.monster)})
+           
 
+    }
+    function renderChosenMonster(pet,monsterTemplate) {
+        // get attributes off user_monster and fill here
+        let {happiness, hunger_level, power} = pet
+        console.log("this ran")
+        console.log(pet,monsterTemplate)
+        row.innerHTML = `
+        <div data-id=${pet.id} class="card" style="width: 45rem;">
+            <img src=${monsterTemplate.image_url} class="card-img-top" alt="...">
+            <div class="card-body">
+             <h5 class="card-title">Name: ${pet.name}</h5>
+            <p class="card-text">${pet.name} loves long walks on the beach</p>
+            <button type="button" class="btn btn-info">Feed</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-info" data-name="hunger" role="progressbar" style="width: ${hunger_level}%" aria-valuenow="${hunger_level}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>
+    
+                <button type="button" class="btn btn-warning">Pet 😸</button>
+                <button type="button" class="btn btn-warning">Punish 😿</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-warning" data-name="happiness" role="progressbar" style="width: ${happiness}%" aria-valuenow="${happiness}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>    
+    
+    
+                <button type="button" class="btn btn-danger">Train</button><br><br>
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped bg-danger" data-name="power" role="progressbar" style="width: ${power}%" aria-valuenow="${power}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div><br><br>
+            </div>
+        </div>
+        `
     }
 
    function clickHandler() {
@@ -257,9 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <input type="text" class="form-control" id="name" placeholder="Username">
                 </div>
                 <button type="submit" class="btn btn-primary">Create Account</button>
-                    </form>
-                
-                
+                    </form>                
                 `
             } else if(e.target.textContent === "Feed") {
                 const userMonsterId = e.target.closest(".card").dataset.id
@@ -270,6 +240,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 const newStatObj = {
                     hunger_level: currentStat
+                }
+
+                patchMonster(userMonsterId, newStatObj)
+            }
+            else if(e.target.textContent === "Pet 😸") {
+                const userMonsterId = e.target.closest(".card").dataset.id
+                const progressBar = e.target.parentElement.querySelector("[data-name='happiness']")
+                
+                let currentStat = parseInt(progressBar.ariaValueNow)
+                currentStat+=5
+                
+                const newStatObj = {
+                    happiness: currentStat
+                }
+
+                patchMonster(userMonsterId, newStatObj)
+            }
+            else if(e.target.textContent === "Punish 😿") {
+                const userMonsterId = e.target.closest(".card").dataset.id
+                const progressBar = e.target.parentElement.querySelector("[data-name='happiness']")
+                
+                let currentStat = parseInt(progressBar.ariaValueNow)
+                currentStat-=5
+                
+                const newStatObj = {
+                    happiness: currentStat
+                }
+
+                patchMonster(userMonsterId, newStatObj)
+            }
+            else if(e.target.textContent === "Train") {
+                const userMonsterId = e.target.closest(".card").dataset.id
+                const progressBar = e.target.parentElement.querySelector("[data-name='power']")
+                
+                let currentStat = parseInt(progressBar.ariaValueNow)
+                currentStat+=5
+                
+                const newStatObj = {
+                    power: currentStat
                 }
 
                 patchMonster(userMonsterId, newStatObj)
@@ -291,4 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 })
+
+
+
 
