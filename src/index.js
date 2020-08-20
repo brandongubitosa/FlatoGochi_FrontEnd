@@ -231,6 +231,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderChosenMonster(pet,monsterTemplate) {
         let {happiness, hunger_level, power} = pet
         
+        timeouts.forEach(clearTimeout)
+        timeouts.length = 0
+
         row.innerHTML = `
         <div data-id=${pet.id} class="card" style="width: 45rem;">
             <img src=${monsterTemplate.image_url} class="card-img-top" alt="...">
@@ -242,13 +245,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="progress-bar progress-bar-striped bg-info" data-name="hunger" role="progressbar" style="width: ${hunger_level}%" aria-valuenow="${hunger_level}" aria-valuemin="0" aria-valuemax="100">HUNGER</div>
                 </div><br><br>
     
+
+                <div id="petgif" style="display: none"> 
+                    <img src="https://s3.amazonaws.com/barkpost-assets/50+GIFs/39.gif"><br><br><br>
+                </div>
+                
+                <div id="punishgif" style="display: none"> 
+                    <img src="https://i.makeagif.com/media/5-01-2017/AypVNk.gif"><br><br><br>
+                </div>
+                
+
                 <button type="button" class="btn btn-warning">Punish 😿</button>
                 <button type="button" class="btn btn-warning">Pet 😸</button><br><br>
                 
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped bg-warning" data-name="happiness" role="progressbar" style="width: ${happiness}%; color:black" aria-valuenow="${happiness}" aria-valuemin="0" aria-valuemax="100">HAPPINESS</div>
                 </div><br><br>    
-    
+                
     
                 <button type="button" class="btn btn-success">Train</button>
                 <button type="button" class="btn btn-success">Speed Training</button><br><br>
@@ -322,36 +335,50 @@ document.addEventListener("DOMContentLoaded", () => {
                 patchMonster(userMonsterId, newStatObj)
             }
             else if(e.target.textContent === "Pet 😸") {
-                const userMonsterId = e.target.closest(".card").dataset.id
-                const progressBar = e.target.parentElement.querySelector("[data-name='happiness']")
-                
-                timeouts.forEach(clearTimeout)
-                timeouts.length = 0
+                const petGifDiv = document.getElementById("petgif")
+                petGifDiv.style.display = "block"
 
-                let currentStat = parseInt(progressBar.ariaValueNow)
-                currentStat+=5
-                
-                const newStatObj = {
-                    happiness: currentStat
-                }
+                setTimeout(function(){
+                    const userMonsterId = e.target.closest(".card").dataset.id
+                    const progressBar = e.target.parentElement.querySelector("[data-name='happiness']")
+                    
+                    timeouts.forEach(clearTimeout)
+                    timeouts.length = 0
 
-                patchMonster(userMonsterId, newStatObj)
+                    let currentStat = parseInt(progressBar.ariaValueNow)
+                    currentStat+=5
+                    
+                    const newStatObj = {
+                        happiness: currentStat
+                    }
+
+                    patchMonster(userMonsterId, newStatObj)
+
+                }, 2000)
+                
+                
             }
             else if(e.target.textContent === "Punish 😿") {
-                const userMonsterId = e.target.closest(".card").dataset.id
-                const progressBar = e.target.parentElement.querySelector("[data-name='happiness']")
-                
-                timeouts.forEach(clearTimeout)
-                timeouts.length = 0
+                const petGifDiv = document.getElementById("punishgif")
+                petGifDiv.style.display = "block"
 
-                let currentStat = parseInt(progressBar.ariaValueNow)
-                currentStat-=5
-                
-                const newStatObj = {
-                    happiness: currentStat
-                }
+                setTimeout(function(){
+                    const userMonsterId = e.target.closest(".card").dataset.id
+                    const progressBar = e.target.parentElement.querySelector("[data-name='happiness']")
+                    
+                    timeouts.forEach(clearTimeout)
+                    timeouts.length = 0
 
-                patchMonster(userMonsterId, newStatObj)
+                    let currentStat = parseInt(progressBar.ariaValueNow)
+                    currentStat-=5
+                    
+                    const newStatObj = {
+                        happiness: currentStat
+                    }
+
+                    patchMonster(userMonsterId, newStatObj)
+                }, 2000)
+                
             }
             else if(e.target.textContent === "Train") {
                 const userMonsterId = e.target.closest(".card").dataset.id
