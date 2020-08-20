@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
         logOutButton.id = "logout"
         logOutButton.textContent = "Log Out"
         logInDiv.append(logOutButton)
-
+     
         //creates change name button:
         const updateUserButton = document.createElement("button")
         updateUserButton.class = "btn btn-primary"
