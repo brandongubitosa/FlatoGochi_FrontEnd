@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button type="button" class="btn btn-success">Train</button>
                 <button type="button" class="btn btn-success">Speed Training</button><br><br>
                 <div class="progress">
-                    <div class="progress-bar progress-bar-striped bg-success" data-name="power" role="progressbar" style="width: ${power}%" aria-valuenow="${power}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar progress-bar-striped bg-success" data-name="power" role="progressbar" style="width: ${power}%" aria-valuenow="${power}" aria-valuemin="0" aria-valuemax="100">POWER</div>
                 </div><br><br>
     
 
