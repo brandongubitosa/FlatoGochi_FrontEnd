@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const timeouts = []
 
     function chooseYourMonster() {
+        row.innerHTML = ``
+
         fetch("http://localhost:3000/monsters")
             .then(response => response.json())
             .then(monsters => {
@@ -239,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src=${monsterTemplate.image_url} class="card-img-top" alt="...">
             <div class="card-body">
              <h5 class="card-title">Name: ${pet.name}</h5>
-            <p class="card-text">${pet.name} loves long walks on the beach</p>
+            <p class="card-text">${pet.name}${monsterTemplate.message}</p>
             <button type="button" class="btn btn-info">Feed</button><br><br>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped bg-info" data-name="hunger" role="progressbar" style="width: ${hunger_level}%" aria-valuenow="${hunger_level}" aria-valuemin="0" aria-valuemax="100">HUNGER</div>
@@ -263,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div><br><br>    
                 
     
-                <button type="button" class="btn btn-success">Train</button>
+                <button type="button" class="btn btn-success">Jog</button>
                 <button type="button" class="btn btn-success">Speed Training</button><br><br>
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped bg-success" data-name="power" role="progressbar" style="width: ${power}%" aria-valuenow="${power}" aria-valuemin="0" aria-valuemax="100">POWER</div>
@@ -298,7 +300,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.target.textContent === "Log Out") {
                 timeouts.forEach(clearTimeout)
                 timeouts.length = 0
-                row.innerHTML = ``
+                row.innerHTML = `
+                <div class="fling-minislide">
+                    <img src="./cool_monster.png" alt="Slide 3" />
+                    <img src="https://www.snesmaps.com/maps/ChronoTrigger/sprites/enemies/bosses/Lavos.png" alt="Slide 2" />
+                    <img src="https://cdn1.iconfinder.com/data/icons/monster-8-1/512/MonsterV1-92-512.png" alt="Slide 1" />
+                </div>
+                `
                 logInDiv.innerHTML = `
                 <h3 id="greeting"></h3>
                 <form class="form-inline" id="sign-in">
@@ -380,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 2000)
                 
             }
-            else if(e.target.textContent === "Train") {
+            else if(e.target.textContent === "Jog") {
                 const userMonsterId = e.target.closest(".card").dataset.id
                 const progressBar = e.target.parentElement.querySelector("[data-name='power']")
                 
@@ -388,7 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 timeouts.length = 0
 
                 let currentStat = parseInt(progressBar.ariaValueNow)
-                currentStat+=5
+                currentStat+=1
                 
                 const newStatObj = {
                     power: currentStat

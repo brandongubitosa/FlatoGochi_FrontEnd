@@ -1,11 +1,16 @@
 
   #login{
     flex-direction: column;
-    justify-content: center;
     text-align: center;  
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+    /* font-family: Arial, Helvetica, sans-serif; */
   }
 
+
+#login > form {
+  align-content: center;
+  padding-left: 35%;
+}
 
   .row{
       justify-content: center;
@@ -30,7 +35,7 @@ h1{
   flex-direction: column;
   justify-content: center;
   text-align: center;  
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
 }
 
 
@@ -41,8 +46,9 @@ h1{
     text-align: center;  
 }
 
-.fling-minislide {width:70%; height:0px; padding-bottom: 55%; overflow:hidden; position: relative;;}
-.fling-minislide img{ position:absolute; animation:fling-minislide 20s infinite; opacity:0; width: 50%; height: auto; justify-content: center;}
+.fling-minislide {width:70%; height:0px; padding-bottom: 55%; overflow:hidden; position: relative; justify-content: center;}
+.fling-minislide img{ position:absolute; animation:fling-minislide 15s infinite; opacity:0; width: 50%; height: auto; align-content: center; margin-left: auto;
+  margin-right: auto; left: 0; right: 0; text-align: center;}
 
 @keyframes fling-minislide {25%{opacity:1;} 40%{opacity:0;}}
 
