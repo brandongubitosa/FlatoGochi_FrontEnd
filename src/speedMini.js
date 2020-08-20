@@ -33,7 +33,7 @@ function speedGame(imgSRC){
 
 
     const gameStart = setInterval(draw,10)
-    // setTimeout(gameOver,5000)
+    setTimeout(gameOver,10000)
 
     document.addEventListener("keydown", keyDownHandler)
     document.addEventListener("keyup", keyUpHandler)

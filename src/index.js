@@ -255,8 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped bg-success" data-name="power" role="progressbar" style="width: ${power}%" aria-valuenow="${power}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div><br><br>
-            </div>
-        </div>
+    
 
 
                 <button type="button" class="btn btn-danger">Release Monster</button><br><br>
@@ -405,6 +404,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 })
                 
             } else if(e.target.textContent === "Speed Training"){
+                timeouts.forEach(clearTimeout)
+                timeouts.length = 0
                 speedGame(e.target.closest(".card").querySelector("img").src)
             }
 
@@ -415,7 +416,6 @@ document.addEventListener("DOMContentLoaded", () => {
    
     clickHandler()
     submitHandler()
-    speedGame("https://vignette.wikia.nocookie.net/marvelvscapcom/images/3/38/Firebrand_MvCI_render.png/revision/latest?cb=20170822114024")
 
 
 
