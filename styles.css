@@ -30,12 +30,21 @@
    font-weight: bold; 
 }
 
+.logos {
+  
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;  
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  }
+
+
+
+
 h1{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;  
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  display: inline;
 }
 
 
