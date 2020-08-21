@@ -231,14 +231,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function renderChosenMonster(pet,monsterTemplate) {
-        let {happiness, hunger_level, power} = pet
-        
+        let {happiness, hunger_level, power} = pet;
+        let backgroundCollection = {
+            "Cute":"background-image: url('https://cdn.pixabay.com/photo/2016/02/11/14/59/fruits-1193727__340.png')",
+            "Scary":"background-image: url('https://i.pinimg.com/originals/9d/64/66/9d6466259f2199fe0d15f7bcb1562910.jpg')",
+            "Cool":"background-image: url('./cool_city.jpg')" 
+        };
+
+        let background = backgroundCollection[monsterTemplate.monster_theme] || "background: purple"
         timeouts.forEach(clearTimeout)
         timeouts.length = 0
 
         row.innerHTML = `
         <div data-id=${pet.id} class="card" style="width: 45rem;">
-            <img src=${monsterTemplate.image_url} class="card-img-top" alt="...">
+            <img src=${monsterTemplate.image_url} class="card-img-top" style="${background};background-repeat: no-repeat;  background-size: cover;" alt="...">
             <div class="card-body">
              <h5 class="card-title">Name: ${pet.name}</h5>
             <p class="card-text">${pet.name}${monsterTemplate.message}</p>
@@ -459,14 +465,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     function speedGame(imgSRC, stat,id){
-
-        console.log("beginning stat is ",stat)
+        const row = document.querySelector(".row")
         
        
         row.innerHTML = '<canvas id ="myCanvas" width="800" height="600"></canvas>'
         const canvas = document.getElementById("myCanvas")
-        canvas.style = "border: solid thick black"
+        canvas.style = "border: solid thick black;"
         const ctx = canvas.getContext("2d");
+        
         
         //pipeWidth determine the width of the pipe
         let pipeWidth = 100,
@@ -481,7 +487,9 @@ document.addEventListener("DOMContentLoaded", () => {
         spriteWidth = 125,
         spriteHeight = 125,
         birdX = 0 + spriteWidth,
-        birdY = canvas.height/2
+        birdY = canvas.height/2,
+        time = 15000,
+        refresh = 10;
         let upPressed = false;
         let downPressed = false;
         let img =  document.createElement("img"),
@@ -493,8 +501,8 @@ document.addEventListener("DOMContentLoaded", () => {
         
     
     
-        const gameStart = setInterval(draw,10)
-        setTimeout(gameOver,15000)
+        const gameStart = setInterval(draw,refresh)
+        setTimeout(gameOver,time)
     
         document.addEventListener("keydown", keyDownHandler)
         document.addEventListener("keyup", keyUpHandler)
@@ -553,7 +561,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function draw(){
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.drawImage(background,0,0,window.innerWidth,window.innerHeight)
-     //this is the variable we are using for the rate of change on x and y axis
+        //this is the variable we are using for the rate of change on x and y axis
         let dy = -6;
         drawPipe();
         drawBird();
@@ -564,24 +572,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if ((birdY >= 0 && birdY <= pipeHeight-y && birdX === x) || (( birdY >= canvas.height-y-pipeHeight-spriteHeight) && birdY <= canvas.height-spriteHeight && birdX === x)){
             health -=50
         } else  if  (birdX === x)
-        { health += 50
-        console.log(birdY,canvas.height-spriteHeight)}
+        { health += 50}
        
-    
-    
-    
-    
+        
+        
+        
+        
         if (x+dx > canvas.width-pipeWidth || x+dx < 0){
             x = canvas.width-pipeWidth
             // dx =  -Math.floor((Math.random() * 4) + 3)
             y= Math.floor((Math.random() * 300) - 200)
             
-        
+            
         }
         
-    
+        
         x += dx
-      
+        
         if(upPressed){
             birdY += dy
             if (birdY <0){
@@ -595,7 +602,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
         }
     
-    
+        time -= refresh
+        timerDisplay.textContent = `You Currently Have ${time/1000} seconds left `
     
         //collision test
     }
@@ -623,10 +631,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     const newStatObj = {
                         power: stat
                     }
+                    
+                    timerDisplay.style = "color: red; font-weight: bold;font-size: .75vw"
+                    timerDisplay.textContent = `GAME OVER. Your final score is ${health}. Your monster is catching its breath, but seems ready for more.`
     
-                    console.log("game over. final score is", health, "new stat is ", stat)
-                
-                    patchMonster(id, newStatObj)
+                    setTimeout(patchMonster, 4000, id, newStatObj)
+                    
     }
     
     
@@ -638,9 +648,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
     
     
+    let instructions = document.createElement("p")
+    instructions.innerHTML = "<h2> Game Instructions</h2><br> Use the <kbd>&#8593</kbd> and <kbd>&#8595</kbd> keys to move your monster through the obstacles <br><br> <p id='timer'></p>"
     
-    
-                    
+    instructions.style= "display: inline-block; width: 10%;"
+    row.appendChild(instructions)
+    const timerDisplay = document.getElementById("timer");
                     
                    
     
