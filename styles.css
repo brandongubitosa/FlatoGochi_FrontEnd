@@ -64,3 +64,7 @@ h1{
 .fling-minislide img:nth-child(3){animation-delay:0s;}
 .fling-minislide img:nth-child(2){animation-delay:5s;}
 .fling-minislide img:nth-child(1){animation-delay:10s;}
+
+#updatedname{
+  width: 63%;
+}

@@ -309,8 +309,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 row.innerHTML = `
                 <div class="fling-minislide">
                     <img src="./cool_monster.png" alt="Slide 3" />
-                    <img src="https://www.snesmaps.com/maps/ChronoTrigger/sprites/enemies/bosses/Lavos.png" alt="Slide 2" />
-                    <img src="https://cdn1.iconfinder.com/data/icons/monster-8-1/512/MonsterV1-92-512.png" alt="Slide 1" />
+                    <img src="https://vignette.wikia.nocookie.net/marvelvscapcom/images/3/38/Firebrand_MvCI_render.png/revision/latest?cb=20170822114024" alt="Slide 2" />
+                    <img src="https://i.pinimg.com/originals/e3/95/bc/e395bc2aff10f0b95775360b746f6343.png" alt="Slide 1" />
                 </div>
                 `
                 logInDiv.innerHTML = `
@@ -635,7 +635,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     timerDisplay.style = "color: red; font-weight: bold;font-size: .75vw"
                     timerDisplay.textContent = `GAME OVER. Your final score is ${health}. Your monster is catching its breath, but seems ready for more.`
     
-                    setTimeout(patchMonster, 4000, id, newStatObj)
+                    setTimeout(patchMonster, 3500, id, newStatObj)
                     
     }
     
