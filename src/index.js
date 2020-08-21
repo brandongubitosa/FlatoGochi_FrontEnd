@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function renderChosenMonster(pet,monsterTemplate) {
         let {happiness, hunger_level, power} = pet;
         let backgroundCollection = {
-            "Cute":"background-image: url('https://cdn.pixabay.com/photo/2016/02/11/14/59/fruits-1193727__340.png')",
+            "Cute":"background-image: url('https://www.treehugger.com/thmb/Kc3Gx2Y6SmBJNVZgf0OCoaEZpPQ=/735x0/__opt__aboutcom__coeus__resources__content_migration__mnn__images__2018__08__CollectionOfCloudsAgainstABlueSky-8cae9f3109d14dcf98d9facc5775222f.jpg')",
             "Scary":"background-image: url('https://i.pinimg.com/originals/9d/64/66/9d6466259f2199fe0d15f7bcb1562910.jpg')",
             "Cool":"background-image: url('./cool_city.jpg')" 
         };
